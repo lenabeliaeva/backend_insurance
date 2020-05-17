@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class PoliciesCategories {
     private static Map<String, String> policies;
+    private static Map<String, List<Product>> products;
 
     private static void setPolicies(){
         policies = new HashMap<>();
