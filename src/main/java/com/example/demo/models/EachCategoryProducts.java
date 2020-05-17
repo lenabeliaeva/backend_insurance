@@ -41,12 +41,12 @@ public class EachCategoryProducts {
                 "3"});
     }
 
-    public static Map<String, String> getProducts(String id) {
+    public static List<String[]> getProducts(String id) {
         setProducts();
-        Map<String, String> result = new HashMap<>();
+        List<String[]> result = new ArrayList<>();
         for (String[] product : products) {
             if (product[3].equals(id)) {
-                result.put(product[0], product[1] + '\n' + product[2]);
+                result.add(product);
             }
         }
         return result;
