@@ -39,20 +39,11 @@ public class EachCategoryProducts {
                 "Страхование не только от типичных рисков, но и от стихийных бедствий",
                 "3"));
     }
-
-<<<<<<< HEAD
-    public static List<String[]> getProducts(String id) {
-        setProducts();
-        List<String[]> result = new ArrayList<>();
-        for (String[] product : products) {
-            if (product[3].equals(id)) {
-=======
     public static List<Product> getProducts(String id) {
         setProducts();
         List<Product> result = new ArrayList<>();
         for (Product product : products) {
             if (product.getCategoryId().equals(id)) {
->>>>>>> parent of 1433cfc... refused from objects
                 result.add(product);
             }
         }
