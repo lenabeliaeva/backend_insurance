@@ -13,6 +13,7 @@ public class PoliciesCategories {
         policies.put("1", "Страхование жизни");
         policies.put("2", "Автострахование");
         policies.put("3", "Страхование имущества");
+//        policies.put("4", "Страхование мотоциклов");
     }
 
     public static Map<String, String> getPolicies(){

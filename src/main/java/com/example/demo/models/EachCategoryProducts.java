@@ -9,36 +9,42 @@ public class EachCategoryProducts {
     private static void setProducts(){
         products = new ArrayList<>();
         products.add(new Product(
-                "11",
+                11,
                 "Опасные профессии",
                 "Специальные условия для представителей опасных профессий",
                 "1"));
         products.add(new Product(
-                "12",
+                12,
                 "Классический полис",
                 "Стандартный набор услуг",
                 "1"));
         products.add(new Product(
-                "21",
+                21,
                 "ОСАГО",
                 "Обязательное страхование. Компенсация при нанесении вреда другим участникам дорожного движения",
                 "2"));
         products.add(new Product(
-                "22",
+                22,
                 "КАСКО",
                 "Добровольное страхование. Компенсация на случай ущерба или угона",
                 "2"));
         products.add(new Product(
-                "31",
+                31,
                 "Страхование квартиры",
                 "Страхование от взлома, кражи, пожара и других рисков",
                 "3"));
         products.add(new Product(
-                "32",
+                32,
                 "Страхование загородной недвижимости",
                 "Страхование не только от типичных рисков, но и от стихийных бедствий",
                 "3"));
+//        products.add(new Product(
+//                41,
+//                "Страхование мотоциклов",
+//                "Теперь вы можете застраховать мотоцикл!",
+//                "4"));
     }
+
     public static List<Product> getProducts(String id) {
         setProducts();
         List<Product> result = new ArrayList<>();
