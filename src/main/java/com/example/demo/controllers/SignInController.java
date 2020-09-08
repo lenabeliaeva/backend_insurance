@@ -1,35 +1,26 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entity.User;
+import com.example.demo.impl.UserServiceImpl;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 @RestController
 public class SignInController {
-    final static String url = "jdbc:postgresql://localhost:5432/postgres";
-    final static String user = "postgres";
-    final static String pass = "vogula";
+    UserServiceImpl service = new UserServiceImpl();
 
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public String login(@RequestParam String login, @RequestParam String password) {
-        String response = "false";
-        try{
-            Class.forName("org.postgresql.Driver");
-            Connection connection = DriverManager.getConnection(url, user, pass);
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from login where email = ? and password = ?");
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()){
-                response = "true";
-            }
-            connection.close();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return response;
+        User user = new User();
+        user.setEmail(login);
+        user.setPassword(password);
+        return service.login(user);
+    }
+
+    @PostMapping("/registerInstantly")
+    public String signUpInstantly(@RequestParam String user){
+        User u = new Gson().fromJson(user, new TypeToken<User>(){}.getType());
+        return service.instantSignUp(u);
     }
 }

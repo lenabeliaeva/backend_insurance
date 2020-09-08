@@ -38,11 +38,6 @@ public class EachCategoryProducts {
                 "Страхование загородной недвижимости",
                 "Страхование не только от типичных рисков, но и от стихийных бедствий",
                 "3"));
-//        products.add(new Product(
-//                41,
-//                "Страхование мотоциклов",
-//                "Теперь вы можете застраховать мотоцикл!",
-//                "4"));
     }
 
     public static List<Product> getProducts(String id) {
