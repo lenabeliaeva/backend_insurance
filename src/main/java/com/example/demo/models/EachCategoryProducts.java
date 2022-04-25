@@ -6,7 +6,7 @@ import java.util.List;
 public class EachCategoryProducts {
     private static List<Product> products;
 
-    private static void setProducts(){
+    private static void setProducts() {
         products = new ArrayList<>();
         products.add(new Product(
                 11,

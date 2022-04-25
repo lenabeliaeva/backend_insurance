@@ -65,19 +65,19 @@ public class PoliceDaoImpl implements PoliceDao {
         return policies;
     }
 
-    public int getPoliceByNumber(int number){
+    public int getPoliceByNumber(int number) {
         int userId = 0;
-        if (connection != null){
+        if (connection != null) {
             try {
                 PreparedStatement ps = connection.prepareStatement(
                         "select user_id from police where number = ?");
                 ps.setInt(1, number);
                 ResultSet rs = ps.executeQuery();
-                if (rs.next()){
+                if (rs.next()) {
                     userId = rs.getInt("user_id");
                 }
                 return userId;
-            } catch (SQLException throwables){
+            } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         }

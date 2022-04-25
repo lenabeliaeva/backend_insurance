@@ -6,7 +6,7 @@ public class Product {
     private String description;
     private final String CATEGORY_ID;
 
-    public Product(long id, String name, String description, String categoryId){
+    public Product(long id, String name, String description, String categoryId) {
         this.id = id;
         this.name = name;
         this.description = description;

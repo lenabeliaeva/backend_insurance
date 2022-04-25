@@ -13,8 +13,9 @@ public class SignUpController {
     UserServiceImpl service = new UserServiceImpl();
 
     @PostMapping("/register")
-    public String signUp(@RequestParam String user){
-        User u = new Gson().fromJson(user, new TypeToken<User>(){}.getType());
+    public String signUp(@RequestParam String user) {
+        User u = new Gson().fromJson(user, new TypeToken<User>() {
+        }.getType());
         return service.signUp(u);
     }
 }

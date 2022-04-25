@@ -11,31 +11,31 @@ public class DictionaryController {
     private DictItemServiceImpl service = new DictItemServiceImpl();
 
     @GetMapping("/getTsType")
-    public String getTsType(){
+    public String getTsType() {
         return service.getStringById("select id, name from ts_type");
     }
 
     @RequestMapping("/getMarks")
-    public String getMarks(String id){
+    public String getMarks(String id) {
         int thisId = new Gson().fromJson(id, int.class);
-        return service.getStringById("select id, name from marks where ts_type_id = "+ thisId);
+        return service.getStringById("select id, name from marks where ts_type_id = " + thisId);
     }
 
     @RequestMapping("/getModels")
-    public String getModels(String id){
+    public String getModels(String id) {
         int thisId = new Gson().fromJson(id, int.class);
-        return service.getStringById("select id, name from model where marks_id = "+ thisId);
+        return service.getStringById("select id, name from model where marks_id = " + thisId);
     }
 
     @RequestMapping("/getYears")
-    public String getYears(String id){
+    public String getYears(String id) {
         int thisId = new Gson().fromJson(id, int.class);
-        return service.getIntById("select id, year from year where model_id = "+ thisId);
+        return service.getIntById("select id, year from year where model_id = " + thisId);
     }
 
     @RequestMapping("/getPower")
-    public String getPowers(String id){
+    public String getPowers(String id) {
         int thisId = new Gson().fromJson(id, int.class);
-        return service.getIntById("select id, power from power where year_id = "+ thisId);
+        return service.getIntById("select id, power from power where year_id = " + thisId);
     }
 }

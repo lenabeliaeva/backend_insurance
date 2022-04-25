@@ -6,5 +6,6 @@ import java.util.ArrayList;
 
 public interface PropertyDao {
     ArrayList<DictItem> getStringById(String query);
+
     ArrayList<DictItem> getIntById(String query);
 }

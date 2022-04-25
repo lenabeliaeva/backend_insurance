@@ -13,19 +13,21 @@ public class PoliciesController {
     PoliceService service = new PoliceServiceImpl();
 
     @RequestMapping("/addPolice")
-    public String addPolice(String police){
-        Police p = new Gson().fromJson(police, new TypeToken<Police>(){}.getType());
+    public String addPolice(String police) {
+        Police p = new Gson().fromJson(police, new TypeToken<Police>() {
+        }.getType());
         return service.add(p);
     }
 
     @RequestMapping("/getPoliciesList")
-    public String getPoliciesList(String userId){
+    public String getPoliciesList(String userId) {
         int uId = new Gson().fromJson(userId, int.class);
         return service.getPoliceListForUser(uId);
     }
 
-    public String prolong(String police){
-        Police p = new Gson().fromJson(police, new TypeToken<Police>(){}.getType());
+    public String prolong(String police) {
+        Police p = new Gson().fromJson(police, new TypeToken<Police>() {
+        }.getType());
         return service.prolong(p);
     }
 }

@@ -11,7 +11,7 @@ public class UserController {
     UserService service = new UserServiceImpl();
 
     @RequestMapping("/getUser")
-    public String getUser(String userId){
+    public String getUser(String userId) {
         int id = new Gson().fromJson(userId, int.class);
         return service.getUserById(id);
     }

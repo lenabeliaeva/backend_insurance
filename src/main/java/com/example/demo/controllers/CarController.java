@@ -12,22 +12,24 @@ public class CarController {
     CarServiceImpl service = new CarServiceImpl();
 
     @RequestMapping("/calculate")
-    public String calculateCost(String car){
-        Car c = new Gson().fromJson(car, new TypeToken<Car>(){}.getType());
+    public String calculateCost(String car) {
+        Car c = new Gson().fromJson(car, new TypeToken<Car>() {
+        }.getType());
         return service.calculateInsuranceCost(c);
     }
 
     @RequestMapping("/getCar")
-    public String getCarById(String id){
+    public String getCarById(String id) {
         int carId = new Gson().fromJson(id, int.class);
         return service.getCar(carId);
     }
 
     @RequestMapping("/prolongCar")
-    public String prolongInsurance(String carId){
+    public String prolongInsurance(String carId) {
         int id = new Gson().fromJson(carId, int.class);
         String car = service.getCar(id);
-        Car c = new Gson().fromJson(car, new TypeToken<Car>(){}.getType());
+        Car c = new Gson().fromJson(car, new TypeToken<Car>() {
+        }.getType());
         c.setKbm(1);
         c.setInsurCaseCount(1);
         return service.prolong(c);

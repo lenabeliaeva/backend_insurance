@@ -11,7 +11,7 @@ public class ConnectionManager {
     FileInputStream fis;
     Properties property = new Properties();
 
-    public ConnectionManager(){
+    public ConnectionManager() {
         try {
             fis = new FileInputStream("src/main/resources/application.properties");
             property.load(fis);
@@ -23,7 +23,7 @@ public class ConnectionManager {
     public Connection getConnection() {
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection(property.getProperty("spring.datasource.url"),property.getProperty("spring.datasource.username"),property.getProperty("spring.datasource.password"));
+            connection = DriverManager.getConnection(property.getProperty("spring.datasource.url"), property.getProperty("spring.datasource.username"), property.getProperty("spring.datasource.password"));
         } catch (SQLException e) {
             e.printStackTrace();
         }

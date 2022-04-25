@@ -1,22 +1,21 @@
 package com.example.demo.models;
 
-import java.util.HashMap;
+import com.example.demo.entity.Category;
+
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class PoliciesCategories {
-    private static Map<String, String> policies;
-    private static Map<String, List<Product>> products;
+    private static List<Category> policies;
 
-    private static void setPolicies(){
-        policies = new HashMap<>();
-        policies.put("1", "Страхование жизни");
-        policies.put("2", "Автострахование");
-        policies.put("3", "Страхование имущества");
-//        policies.put("4", "Страхование мотоциклов");
+    private static void setPolicies() {
+        policies = new LinkedList<>();
+        policies.add(new Category(1, "Страхование жизни"));
+        policies.add(new Category(2, "Автострахование"));
+        policies.add(new Category(3, "Страхование имущества"));
     }
 
-    public static Map<String, String> getPolicies(){
+    public static List<Category> getPolicies() {
         setPolicies();
         return policies;
     }

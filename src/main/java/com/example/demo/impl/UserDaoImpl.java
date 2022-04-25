@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User save(User user) {
-        if (connection != null){
+        if (connection != null) {
             try {
                 PreparedStatement ps = connection.prepareStatement(
                         "insert into \"user\"(name, second_name, surname, passport, city, login, password) values (?, ?, ?, ?, ?, ?, ?)");
@@ -60,7 +60,7 @@ public class UserDaoImpl implements UserDao {
                         "select id from \"user\" where login = ?");
                 ps.setString(1, user.getEmail());
                 ResultSet rs = ps.executeQuery();
-                if (rs.next()){
+                if (rs.next()) {
                     user.setId(rs.getInt("id"));
                 }
                 return user;

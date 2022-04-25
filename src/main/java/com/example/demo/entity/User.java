@@ -9,11 +9,11 @@ public class User {
     private String name, secondName, surname, passport, email, password, city;
     private List<Car> policies = new ArrayList<>();
 
-    public void addPolice(Car police){
+    public void addPolice(Car police) {
         policies.add(police);
     }
 
-    public List<Car> getPolicies(){
+    public List<Car> getPolicies() {
         return policies;
     }
 

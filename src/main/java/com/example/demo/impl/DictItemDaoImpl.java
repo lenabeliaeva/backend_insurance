@@ -18,20 +18,21 @@ public class DictItemDaoImpl implements PropertyDao {
     public ArrayList<DictItem> getStringById(String query) {
         ArrayList<DictItem> list = new ArrayList<>();
         DictItem i = new DictItem();
-        i.setId(0); i.setName("Выберите Ваш вариант");
+        i.setId(0);
+        i.setName("Выберите Ваш вариант");
         list.add(i);
-        if (connection != null){
+        if (connection != null) {
             try {
                 PreparedStatement ps = connection.prepareStatement(query);
                 ResultSet rs = ps.executeQuery();
-                while (rs.next()){
+                while (rs.next()) {
                     DictItem item = new DictItem();
                     item.setId(rs.getInt("id"));
                     item.setName(rs.getString("name"));
                     list.add(item);
                 }
                 return list;
-            } catch (SQLException throwables){
+            } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         }
@@ -42,29 +43,30 @@ public class DictItemDaoImpl implements PropertyDao {
     public ArrayList<DictItem> getIntById(String query) {
         ArrayList<DictItem> list = new ArrayList<>();
         DictItem i = new DictItem();
-        i.setId(0); i.setName("Выберите Ваш вариант");
+        i.setId(0);
+        i.setName("Выберите Ваш вариант");
         list.add(i);
-        if (connection != null){
+        if (connection != null) {
             try {
                 PreparedStatement ps = connection.prepareStatement(query);
                 ResultSet rs = ps.executeQuery();
-                if (query.contains("power")){
-                    while (rs.next()){
+                if (query.contains("power")) {
+                    while (rs.next()) {
                         DictItem item = new DictItem();
                         item.setId(rs.getInt("id"));
-                        item.setName(rs.getInt("power")+"");
+                        item.setName(rs.getInt("power") + "");
                         list.add(item);
                     }
                 } else {
                     while (rs.next()) {
                         DictItem item = new DictItem();
                         item.setId(rs.getInt("id"));
-                        item.setName(rs.getInt("year")+"");
+                        item.setName(rs.getInt("year") + "");
                         list.add(item);
                     }
                 }
                 return list;
-            } catch (SQLException throwables){
+            } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         }

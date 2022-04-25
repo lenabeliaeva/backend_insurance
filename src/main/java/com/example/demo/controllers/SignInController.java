@@ -19,8 +19,9 @@ public class SignInController {
     }
 
     @PostMapping("/registerInstantly")
-    public String signUpInstantly(@RequestParam String user){
-        User u = new Gson().fromJson(user, new TypeToken<User>(){}.getType());
+    public String signUpInstantly(@RequestParam String user) {
+        User u = new Gson().fromJson(user, new TypeToken<User>() {
+        }.getType());
         return service.instantSignUp(u);
     }
 }

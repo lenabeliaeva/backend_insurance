@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface PoliceDao {
     String save(Police police);
+
     List<Police> getPolicies(int user_id);
+
     int getPoliceByNumber(int number);
 }

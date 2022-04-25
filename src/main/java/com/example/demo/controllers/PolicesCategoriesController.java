@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PolicesCategoriesController {
 
     @RequestMapping("/policies")
-    public String getPoliciesCategories(){
+    public String getPoliciesCategories() {
         return new Gson().toJson(PoliciesCategories.getPolicies());
     }
 }

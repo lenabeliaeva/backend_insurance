@@ -9,7 +9,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public String calculateInsuranceCost(Car car) {
-        if (car.getId() == 0){
+        if (car.getId() == 0) {
             car.setKbm(1);
             car.setInsuranceCost(0);
             car = dao.save(car);
@@ -34,7 +34,7 @@ public class CarServiceImpl implements CarService {
         return new Gson().toJson(car);
     }
 
-    public String prolong(Car car){
+    public String prolong(Car car) {
         double cost = car.getInsuranceCost();
         double kbm = dao.getNewKbmCoefficient(car.getInsurCaseCount(), car.getKbm());
         cost *= kbm;

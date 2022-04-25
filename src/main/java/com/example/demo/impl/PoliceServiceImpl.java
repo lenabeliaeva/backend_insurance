@@ -24,7 +24,7 @@ public class PoliceServiceImpl implements PoliceService {
         } else return "false";
     }
 
-    public String prolong(Police police){
+    public String prolong(Police police) {
         String result = "";
         Car car = carDao.getCarById(police.getCar_id());
 
