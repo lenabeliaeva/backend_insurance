@@ -1,8 +1,8 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entity.Police;
-import com.example.demo.impl.PoliceServiceImpl;
-import com.example.demo.service.PoliceService;
+import com.example.demo.service.impl.PoliceServiceImpl;
+import com.example.demo.service.api.PoliceService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.web.bind.annotation.RequestMapping;

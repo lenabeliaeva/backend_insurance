@@ -1,7 +1,8 @@
-package com.example.demo.impl;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.DictItem;
-import com.example.demo.service.DictItemService;
+import com.example.demo.impl.DictItemDaoImpl;
+import com.example.demo.service.api.DictItemService;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

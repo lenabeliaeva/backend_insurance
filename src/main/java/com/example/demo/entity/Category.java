@@ -1,11 +1,20 @@
 package com.example.demo.entity;
 
-public class Category {
-    private final int id;
-    private final String name;
+import lombok.Getter;
+import lombok.Setter;
 
-    public Category(int id, String name){
-        this.id = id;
-        this.name = name;
-    }
+import javax.persistence.*;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "category")
+public class Category {
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
 }

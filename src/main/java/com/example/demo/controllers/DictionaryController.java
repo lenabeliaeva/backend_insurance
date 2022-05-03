@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.impl.DictItemServiceImpl;
+import com.example.demo.service.impl.DictItemServiceImpl;
 import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

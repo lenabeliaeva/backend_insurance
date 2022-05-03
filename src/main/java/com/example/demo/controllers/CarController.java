@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entity.Car;
-import com.example.demo.impl.CarServiceImpl;
+import com.example.demo.service.impl.CarServiceImpl;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.web.bind.annotation.RequestMapping;

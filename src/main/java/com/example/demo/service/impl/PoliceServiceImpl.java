@@ -1,8 +1,10 @@
-package com.example.demo.impl;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.Car;
 import com.example.demo.entity.Police;
-import com.example.demo.service.PoliceService;
+import com.example.demo.impl.CarDaoImpl;
+import com.example.demo.impl.PoliceDaoImpl;
+import com.example.demo.service.api.PoliceService;
 import com.google.gson.Gson;
 
 import java.util.List;

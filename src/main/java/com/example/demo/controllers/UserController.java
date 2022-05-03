@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.impl.UserServiceImpl;
-import com.example.demo.service.UserService;
+import com.example.demo.service.impl.UserServiceImpl;
+import com.example.demo.service.api.UserService;
 import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
