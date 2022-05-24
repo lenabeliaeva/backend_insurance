@@ -5,29 +5,27 @@ import com.example.demo.service.impl.PoliceServiceImpl;
 import com.example.demo.service.api.PoliceService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class PoliciesController {
     PoliceService service = new PoliceServiceImpl();
 
-    @RequestMapping("/addPolice")
-    public String addPolice(String police) {
-        Police p = new Gson().fromJson(police, new TypeToken<Police>() {
-        }.getType());
-        return service.add(p);
+    @GetMapping("/addPolice")
+    public ResponseEntity<Police> addPolice(Police police) {
+        return ResponseEntity.ok(service.add(police));
     }
 
-    @RequestMapping("/getPoliciesList")
-    public String getPoliciesList(String userId) {
-        int uId = new Gson().fromJson(userId, int.class);
-        return service.getPoliceListForUser(uId);
+    @GetMapping("/getPoliciesList")
+    public ResponseEntity<List<Police>> getPoliciesList(@RequestParam(name = "userId") final int userId) {
+        return ResponseEntity.ok(service.getPoliceListForUser(userId));
     }
 
-    public String prolong(String police) {
-        Police p = new Gson().fromJson(police, new TypeToken<Police>() {
-        }.getType());
-        return service.prolong(p);
+    @PatchMapping("/prolong")
+    public ResponseEntity<Police> prolong(Police police) {
+        return ResponseEntity.ok(service.prolong(police));
     }
 }

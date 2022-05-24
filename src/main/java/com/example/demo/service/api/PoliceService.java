@@ -2,10 +2,12 @@ package com.example.demo.service.api;
 
 import com.example.demo.entity.Police;
 
+import java.util.List;
+
 public interface PoliceService {
-    String add(Police police);
+    Police add(Police police);
 
-    String getPoliceListForUser(int user_id);
+    List<Police> getPoliceListForUser(long userId);
 
-    String prolong(Police police);
+    Police prolong(Police police);
 }

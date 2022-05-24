@@ -1,73 +1,40 @@
 package com.example.demo.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.util.Date;
 
+@Getter
+@Setter
+@Entity
+@Table(name = "police")
 public class Police {
-    private int id, userId, carId, typeOfObject, number;
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column
+    private int number;
+
+    @Column
     private double cost;
-    private Date start, end;
 
-    public int getId() {
-        return id;
-    }
+    @Column
+    private int objectType;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @Column
+    private Date startDate;
 
-    public int getUser_id() {
-        return userId;
-    }
+    @Column
+    private Date endDate;
 
-    public void setUser_id(int user_id) {
-        this.userId = user_id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public int getCar_id() {
-        return carId;
-    }
-
-    public void setCar_id(int car_id) {
-        this.carId = car_id;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public void setTypeOfObject(int typeOfObject) {
-        this.typeOfObject = typeOfObject;
-    }
-
-    public int getTypeOfObject() {
-        return typeOfObject;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
-    public double getCost() {
-        return cost;
-    }
-
-    public Date getEnd() {
-        return end;
-    }
-
-    public Date getStart() {
-        return start;
-    }
-
-    public void setEnd(Date end) {
-        this.end = end;
-    }
-
-    public void setStart(Date start) {
-        this.start = start;
-    }
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 }

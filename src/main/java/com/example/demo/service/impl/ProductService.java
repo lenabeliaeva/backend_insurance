@@ -23,6 +23,15 @@ public class ProductService {
     private RatingRepository ratingRepository;
 
     @Transactional
+    public List<Product> getAllProducts() {
+        return (List<Product>) productRepository.findAll();
+    }
+
+    public List<Product> getProductsByCategory(long categoryId) {
+        return productRepository.getProductsByCategoryId(categoryId);
+    }
+
+    @Transactional
     public List<Product> getProductsByBayesAverage() {
         List<Product> allProducts = (List<Product>) productRepository.findAll();
 
@@ -39,13 +48,16 @@ public class ProductService {
         double aImprAll = ratingRepository.getAverageImpressionRatingOfAllDb();
 
         double wPrice = ratingRepository.getPriceRatingWeightOfProduct(productId);
-        double rPrice = ratingRepository.getAveragePriceRatingOfProduct(productId);
+        Float rPriceFloat = ratingRepository.getAveragePriceRatingOfProduct(productId);
+        double rPrice = rPriceFloat == null ? 0 : rPriceFloat;
 
         double wConv = ratingRepository.getConvenienceRatingWeightOfProduct(productId);
-        double rConv = ratingRepository.getAverageConvenienceRatingOfProduct(productId);
+        Float rConvFloat = ratingRepository.getAverageConvenienceRatingOfProduct(productId);
+        double rConv = rConvFloat == null ? 0 : rConvFloat;
 
         double wImpr = ratingRepository.getImpressionRatingWeightOfProduct(productId);
-        double rImpr = ratingRepository.getAverageImpressionRatingOfProduct(productId);
+        Float rImprFloat = ratingRepository.getAverageImpressionRatingOfProduct(productId);
+        double rImpr = rImprFloat == null ? 0 : rImprFloat;
 
         double denominator = THRESHOLD * 3 + wPrice + wConv + wImpr;
         if (denominator != 0) {

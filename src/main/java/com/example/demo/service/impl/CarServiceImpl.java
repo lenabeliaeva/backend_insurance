@@ -1,45 +1,55 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Car;
-import com.example.demo.impl.CarDaoImpl;
+import com.example.demo.entity.dictionary.KBM;
+import com.example.demo.repository.CarRepository;
+import com.example.demo.repository.KbmRepository;
+import com.example.demo.repository.PowerRepository;
 import com.example.demo.service.api.CarService;
-import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CarServiceImpl implements CarService {
-    CarDaoImpl dao = new CarDaoImpl();
+    @Autowired
+    CarRepository repository;
+
+    @Autowired
+    PowerRepository powerRepository;
+
+    @Autowired
+    KbmRepository kbmRepository;
 
     @Override
-    public String calculateInsuranceCost(Car car) {
-        if (car.getId() == 0) {
-            car.setKbm(1);
-            car.setInsuranceCost(0);
-            car = dao.save(car);
-        }
-        int tsTypeCoeff = dao.getTsTypeCoefficient(car.getTsType());
-        double powerCoeff = dao.getPowerCoefficient(car.getPower());
+    public Car calculateInsuranceCost(Car car) {
+//        if (car.getId() == 0) {
+//            car.setKbm(1);  1 was an id probably
+//            car.setInsuranceCost(0);
+//            car = dao.save(car);
+//        }
+        int tsTypeCoeff = car.getTsType().getCoefficient();
+        double powerCoeff = car.getPower().getCoefficient();
         double cost = tsTypeCoeff * powerCoeff;
         car.setInsuranceCost(cost);
-        return new Gson().toJson(car);
+        return car;
     }
 
     @Override
-    public String saveCar(Car car) {
-        car.setKbm(1);
-        car = dao.save(car);
-        return new Gson().toJson(car);
+    public Car saveCar(Car car) {
+        car.setKbm(kbmRepository.findById(1L).orElse(new KBM()));
+        return repository.save(car);
     }
 
     @Override
-    public String getCar(int id) {
-        Car car = dao.getCarById(id);
-        return new Gson().toJson(car);
+    public Car getCar(long id) {
+        return repository.findById(id).orElse(new Car());
     }
 
-    public String prolong(Car car) {
-        double cost = car.getInsuranceCost();
-        double kbm = dao.getNewKbmCoefficient(car.getInsurCaseCount(), car.getKbm());
-        cost *= kbm;
-        car.setInsuranceCost(cost);
-        return new Gson().toJson(car);
-    }
+//    public String prolong(Car car) {
+//        double cost = car.getInsuranceCost();
+//        double kbm = dao.getNewKbmCoefficient(car.getInsurCaseCount(), car.getKbm().getId());
+//        cost *= kbm;
+//        car.setInsuranceCost(cost);
+//        return new Gson().toJson(car);
+//    }
 }

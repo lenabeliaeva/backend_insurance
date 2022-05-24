@@ -1,87 +1,50 @@
 package com.example.demo.entity;
 
+import com.example.demo.entity.dictionary.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "car")
 public class Car {
-    private int id, tsType, marka, model, year, power, kbm, insurCaseCount;
-    private double insuranceCost;
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "ts_type")
+    private TsType tsType;
+
+    @ManyToOne
+    @JoinColumn(name = "marka")
+    private Marka marka;
+
+    @ManyToOne
+    @JoinColumn(name = "model")
+    private Model model;
+
+    @ManyToOne
+    @JoinColumn(name = "power")
+    private Power power;
+
+    @ManyToOne
+    @JoinColumn(name = "year")
+    private Year year;
+
+    @Column
     private String regNumber;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @Column
+    private int insurCaseCount;
 
-    public int getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "kbm")
+    private KBM kbm;
 
-    public void setTsType(int tsType) {
-        this.tsType = tsType;
-    }
-
-    public int getTsType() {
-        return tsType;
-    }
-
-    public void setMarka(int marka) {
-        this.marka = marka;
-    }
-
-    public void setModel(int model) {
-        this.model = model;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public void setInsuranceCost(double insuranceCost) {
-        this.insuranceCost = insuranceCost;
-    }
-
-    public void setPower(int power) {
-        this.power = power;
-    }
-
-    public int getMarka() {
-        return marka;
-    }
-
-    public int getModel() {
-        return model;
-    }
-
-    public int getPower() {
-        return power;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public double getInsuranceCost() {
-        return insuranceCost;
-    }
-
-    public String getRegNumber() {
-        return regNumber;
-    }
-
-    public void setRegNumber(String regNumber) {
-        this.regNumber = regNumber;
-    }
-
-    public int getKbm() {
-        return kbm;
-    }
-
-    public void setKbm(int kbm) {
-        this.kbm = kbm;
-    }
-
-    public int getInsurCaseCount() {
-        return insurCaseCount;
-    }
-
-    public void setInsurCaseCount(int insurCaseCount) {
-        this.insurCaseCount = insurCaseCount;
-    }
+    @Column
+    private double insuranceCost;
 }
