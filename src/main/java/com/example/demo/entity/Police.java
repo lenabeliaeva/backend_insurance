@@ -37,4 +37,8 @@ public class Police {
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 }

@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.example.demo.enums.ActivitySphere;
+import com.example.demo.enums.SexEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,6 +37,18 @@ public class User {
 
     @Column
     private String city;
+
+    @Column
+    private int age;
+
+    @Column
+    private SexEnum sex;
+
+    @Column
+    private int income;
+
+    @Column
+    private ActivitySphere activitySphere;
 
     @OneToMany
     private List<Police> policies;
