@@ -1,14 +1,20 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.entity.Category;
+import com.example.demo.entity.Police;
 import com.example.demo.entity.Product;
-import com.example.demo.repository.ProductRepository;
-import com.example.demo.repository.RatingRepository;
+import com.example.demo.entity.User;
+import com.example.demo.recommendations.ContentBased;
+import com.example.demo.recommendations.SlopeOne;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +27,15 @@ public class ProductService {
 
     @Autowired
     private RatingRepository ratingRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PoliceRepository policeRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Transactional
     public List<Product> getAllProducts() {
@@ -67,4 +82,17 @@ public class ProductService {
             return 0;
         }
     }
+
+    public Set<Product> getProductsByContentBased() {
+        User someUser = userRepository.findById(39L).orElse(new User());
+        List<Product> userProducts = someUser.getPolicies().stream().map(Police::getProduct).collect(Collectors.toList());
+        return ContentBased.getByContentBased(userProducts, (List<Product>) productRepository.findAll(),
+                (List<Category>) categoryRepository.findAll());
+    }
+
+//    public List<Product> getProductsBySlopeOne() {
+//        List<Product> allProducts = (List<Product>) productRepository.findAll();
+//        User someUser = userRepository.findById(34L).orElse(new User());
+//        SlopeOne.slopeOne(someUser, 3.6, allProducts);
+//    }
 }

@@ -34,9 +34,9 @@ public class Police {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "car_id")
-    private Car car;
+//    @ManyToOne
+//    @JoinColumn(name = "car_id")
+//    private Car car;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

@@ -7,40 +7,40 @@ import com.example.demo.entity.User;
 import java.util.*;
 
 public class SlopeOne {
-    private static Map<Product, Map<Product, Double>> difference = new HashMap<>();
-    private static Map<Product, Map<Product, Integer>> frequency = new HashMap<>();
+    private static final Map<Product, Map<Product, Double>> difference = new HashMap<>();
+    private static final Map<Product, Map<Product, Integer>> frequency = new HashMap<>();
     private static Map<User, HashMap<Product, Double>> inputData;
-    private static Map<User, HashMap<Product, Double>> outputData = new HashMap<>();
+    private static final Map<User, HashMap<Product, Double>> outputData = new HashMap<>();
 
     public static List<Product> slopeOne(User user, Double minRating, List<Police> rec) {
-        inputData = toHashMap(rec);
+//        inputData = toHashMap(rec);
 //        printData(inputData);
         long start = System.currentTimeMillis();
         buildDifferencesMatrix(inputData);
         List<Product> result = predict(inputData, user, minRating, 0.55, 0.45);
         long finish = System.currentTimeMillis();
         long resultCalc = finish - start;
-        System.out.println("result = " + resultCalc);
-        System.out.println(result);
+        System.out.println("result time = " + resultCalc);
+        System.out.println("Prediction: " + result);
         return result;
     }
 
-    private static Map<User, HashMap<Product, Double>> toHashMap(List<Police> rec){
-        Map<User, HashMap<Product, Double>> allElements = new HashMap<>();
-        HashMap<Police, Double> map2;
-        for (int i = 0; i < rec.size(); i++){
-            map2 = new HashMap<>();
-            map2.put(rec.get(i).getProduct(), rec.get(i).getProduct().getRatings());
-            if(i+1 < rec.size() && rec.get(i + 1).getUser().equals(rec.get(i).getUser()))
-                for(Police police: rec) {
-                    if (police.getUser().equals(rec.get(i).getUser()))
-                        map2.put(police.getProduct(), (double)police.getRating());
-                }
-            if(!allElements.containsKey(rec.get(i).getUser()))
-                allElements.put(rec.get(i).getUser(), map2);
-        }
-        return allElements;
-    }
+//    private static Map<User, HashMap<Product, Double>> toHashMap(List<Product> rec){
+//        Map<User, HashMap<Product, Double>> allElements = new HashMap<>();
+//        HashMap<Product, Double> map2;
+//        for (int i = 0; i < rec.size(); i++){
+//            map2 = new HashMap<>();
+//            map2.put(rec.get(i), (double) rec.get(i).getRatings().get(0).getConvenience());
+//            if(i+1 < rec.size() && rec.get(i + 1).getUser().equals(rec.get(i).getUser()))
+//                for(Police police: rec) {
+//                    if (police.getUser().equals(rec.get(i).getUser()))
+//                        map2.put(police.getProduct(), (double)police.getProduct().getRatings().get(0).getConvenience());
+//                }
+//            if(!allElements.containsKey(rec.get(i).getUser()))
+//                allElements.put(rec.get(i).getUser(), map2);
+//        }
+//        return allElements;
+//    }
 
     /**
      * Нахождение матрицы отклонений
@@ -84,9 +84,9 @@ public class SlopeOne {
      * @param data существующая матрица оценок
      */
     private static ArrayList<Product> predict(Map<User, HashMap<Product, Double>> data, User user, Double minRat, Double w1, Double w2) {
-        HashMap<Product, Double> uPred = new HashMap<Product, Double>();
+        HashMap<Product, Double> uPred = new HashMap<>();
         HashMap<Product, Integer> uFreq = new HashMap<>();
-        ArrayList<Product> recomendation = new ArrayList<>();
+        ArrayList<Product> recommendation = new ArrayList<>();
         for (Product j : difference.keySet()) {
             uFreq.put(j, 0);
             uPred.put(j, 0.0);
@@ -113,7 +113,7 @@ public class SlopeOne {
             for(Map.Entry<User, HashMap<Product, Double>> e2 :inputData.entrySet()){
                 for (Product j : e.getValue().keySet()) {
                     if (e.getValue().containsKey(j)) {
-                        double weightRat = e.getValue().get(j) * w1 + j.getRating() * w2;
+                        double weightRat = e.getValue().get(j) * w1 + j.getRatings().get(0).getConvenience() * w2;
                         clean.put(j, weightRat);
                     } else if (!clean.containsKey(j)) {
                         clean.put(j, -1.0);
@@ -121,29 +121,26 @@ public class SlopeOne {
                 }
             }
             outputData.put(e.getKey(), clean);
-
         }
         for(Map.Entry<User, HashMap<Product, Double>> map: outputData.entrySet()) { //create recommendation list
             if (map.getKey() == user) {
                 for (Map.Entry<Product, Double> eSet : map.getValue().entrySet()) {
                     if (eSet.getValue() >= minRat)
-                        recomendation.add(eSet.getKey());
+                        recommendation.add(eSet.getKey());
                 }
                 System.out.println("res = " + user.getPolicies());
-                for (Police res : user.getPolicies()) { //delete own reservation from recommendation list
-                    if(res.getRating() > 0)
-                        recomendation.remove(res.getProduct());
+                for (Police res : user.getPolicies()) { //delete own policies from recommendation list
+                    recommendation.remove(res.getProduct());
+//                    if(res.getRating() > 0)
+//                        recommendation.remove(res.getProduct());
                 }
             }
         }
-
-
-        recomendation.sort(Comparator.comparing(Product::getRating));
-        return recomendation;
+        recommendation.sort(Comparator.comparingInt(o -> o.getRatings().get(0).getConvenience()));
+        return recommendation;
     }
 
-
-    static double CalculateRmse(double[] pred, double[] real) {
+    static double calculateRmse(double[] pred, double[] real) {
         double sum = 0;
         double average;
         double rmse;

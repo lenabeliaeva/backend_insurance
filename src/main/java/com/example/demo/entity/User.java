@@ -1,7 +1,9 @@
 package com.example.demo.entity;
 
-import com.example.demo.enums.ActivitySphere;
-import com.example.demo.enums.SexEnum;
+import com.example.demo.entity.userdata.ActivitySphere;
+import com.example.demo.entity.userdata.EducationLevel;
+import com.example.demo.entity.userdata.Gender;
+import com.example.demo.entity.userdata.IncomeLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Table
+@Table(name = "users")
 @Entity
 public class User {
     @Id
@@ -29,7 +31,7 @@ public class User {
     @Column
     private String passport;
 
-    @Column
+    @Column(name = "login")
     private String email;
 
     @Column
@@ -41,15 +43,22 @@ public class User {
     @Column
     private int age;
 
-    @Column
-    private SexEnum sex;
+    @ManyToOne
+    @JoinColumn(name = "education_id")
+    private EducationLevel education;
 
-    @Column
-    private int income;
+    @ManyToOne
+    @JoinColumn(name = "gender_id")
+    private Gender gender;
 
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "income_level_id")
+    private IncomeLevel income;
+
+    @ManyToOne
+    @JoinColumn(name = "activity_sphere_id")
     private ActivitySphere activitySphere;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Police> policies;
 }

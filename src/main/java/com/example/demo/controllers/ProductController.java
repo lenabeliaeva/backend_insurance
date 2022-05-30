@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class ProductController {
@@ -28,7 +29,12 @@ public class ProductController {
     }
 
     @GetMapping(path = "/products/category")
-    public ResponseEntity<List<Product>> gerProductsByCategory(@RequestParam(name = "id") long categoryId) {
+    public ResponseEntity<List<Product>> getProductsByCategory(@RequestParam(name = "id") long categoryId) {
         return ResponseEntity.ok(productService.getProductsByCategory(categoryId));
+    }
+
+    @GetMapping(path = "/contentBased")
+    public ResponseEntity<Set<Product>> getProductsByContentBased() {
+        return ResponseEntity.ok(productService.getProductsByContentBased());
     }
 }
