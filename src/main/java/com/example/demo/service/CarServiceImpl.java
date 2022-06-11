@@ -1,16 +1,15 @@
-package com.example.demo.service.impl;
+package com.example.demo.service;
 
 import com.example.demo.entity.Car;
 import com.example.demo.entity.dictionary.KBM;
 import com.example.demo.repository.CarRepository;
 import com.example.demo.repository.KbmRepository;
 import com.example.demo.repository.PowerRepository;
-import com.example.demo.service.api.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CarServiceImpl implements CarService {
+public class CarServiceImpl {
     @Autowired
     CarRepository repository;
 
@@ -20,7 +19,6 @@ public class CarServiceImpl implements CarService {
     @Autowired
     KbmRepository kbmRepository;
 
-    @Override
     public Car calculateInsuranceCost(Car car) {
 //        if (car.getId() == 0) {
 //            car.setKbm(1);  1 was an id probably
@@ -34,13 +32,11 @@ public class CarServiceImpl implements CarService {
         return car;
     }
 
-    @Override
     public Car saveCar(Car car) {
         car.setKbm(kbmRepository.findById(1L).orElse(new KBM()));
         return repository.save(car);
     }
 
-    @Override
     public Car getCar(long id) {
         return repository.findById(id).orElse(new Car());
     }

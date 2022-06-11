@@ -1,10 +1,8 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entity.Police;
-import com.example.demo.service.impl.PoliceServiceImpl;
-import com.example.demo.service.api.PoliceService;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.demo.service.PoliceServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +10,9 @@ import java.util.List;
 
 @RestController
 public class PoliciesController {
-    PoliceService service = new PoliceServiceImpl();
+
+    @Autowired
+    PoliceServiceImpl service;
 
     @GetMapping("/addPolice")
     public ResponseEntity<Police> addPolice(Police police) {

@@ -1,13 +1,12 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entity.Product;
-import com.example.demo.service.impl.ProductService;
+import com.example.demo.entity.Rating;
+import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
@@ -36,5 +35,15 @@ public class ProductController {
     @GetMapping(path = "/contentBased")
     public ResponseEntity<Set<Product>> getProductsByContentBased() {
         return ResponseEntity.ok(productService.getProductsByContentBased());
+    }
+
+    @PostMapping("/saveRating")
+    public ResponseEntity<Rating> saveRatings(@RequestBody Rating rating) {
+        return ResponseEntity.ok(productService.save(rating));
+    }
+
+    @GetMapping(path = "/cnt")
+    public ResponseEntity<Double> countRMSE() {
+        return ResponseEntity.ok(productService.getCertainRMSE());
     }
 }

@@ -1,18 +1,22 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entity.Car;
-import com.example.demo.service.impl.CarServiceImpl;
+import com.example.demo.service.CarServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CarController {
-    CarServiceImpl service = new CarServiceImpl();
+
+    @Autowired
+    CarServiceImpl service;
 
     @GetMapping("/calculate")
-    public ResponseEntity<Car> calculateCost(Car car) {
+    public ResponseEntity<Car> calculateCost(@RequestBody Car car) {
         return ResponseEntity.ok(service.calculateInsuranceCost(car));
     }
 

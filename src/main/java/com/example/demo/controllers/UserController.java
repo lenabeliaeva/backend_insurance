@@ -1,16 +1,18 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entity.User;
-import com.example.demo.service.impl.UserServiceImpl;
+import com.example.demo.entity.userdata.ActivitySphere;
+import com.example.demo.entity.userdata.EducationLevel;
+import com.example.demo.entity.userdata.Gender;
+import com.example.demo.entity.userdata.IncomeLevel;
+import com.example.demo.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.naming.NoPermissionException;
 import javax.security.auth.login.LoginException;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -33,7 +35,27 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> signUp(@RequestParam(name = "login") String login, @RequestParam(name = "password") String password) throws LoginException {
-        return ResponseEntity.ok(service.signUp(login, password));
+    public ResponseEntity<User> signUp(@RequestBody User user) throws LoginException {
+        return ResponseEntity.ok(service.signUp(user));
+    }
+
+    @GetMapping("/genders")
+    public ResponseEntity<List<Gender>> getAllGenders() {
+        return ResponseEntity.ok(service.getAllGenders());
+    }
+
+    @GetMapping("/educations")
+    public ResponseEntity<List<EducationLevel>> getAllEducations() {
+        return ResponseEntity.ok(service.getAllEducationLevels());
+    }
+
+    @GetMapping("/activities")
+    public ResponseEntity<List<ActivitySphere>> getAllActivities() {
+        return ResponseEntity.ok(service.getAllActivities());
+    }
+
+    @GetMapping("/incomes")
+    public ResponseEntity<List<IncomeLevel>> getAllIncomes() {
+        return ResponseEntity.ok(service.getAllIncomes());
     }
 }

@@ -1,10 +1,14 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.Product;
+import com.example.demo.entity.Rating;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface RatingRepository extends CrudRepository<Product, Long> {
+import java.util.List;
+
+public interface RatingRepository extends CrudRepository<Rating, Long> {
+
+    List<Rating> findAllByProductId(Long productId);
 
     @Query("select avg(r.price) from Rating r")
     double getAveragePriceRatingOfAllDb();

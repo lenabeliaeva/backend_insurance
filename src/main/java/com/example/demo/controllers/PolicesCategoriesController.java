@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entity.Category;
-import com.example.demo.service.impl.CategoryService;
+import com.example.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
