@@ -31,4 +31,7 @@ public class Product {
 
     @Transient
     private double bayesAverageRating;
+
+    @Column
+    private Double bar;
 }

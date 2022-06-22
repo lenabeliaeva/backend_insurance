@@ -33,8 +33,28 @@ public class ProductController {
     }
 
     @GetMapping(path = "/contentBased")
-    public ResponseEntity<Set<Product>> getProductsByContentBased() {
-        return ResponseEntity.ok(productService.getProductsByContentBased());
+    public ResponseEntity<Set<Product>> getProductsByContentBased(@RequestParam(name = "id") Long userId) {
+        return ResponseEntity.ok(productService.getProductsByContentBased(userId));
+    }
+
+    @GetMapping(path = "/userKnn")
+    public ResponseEntity<List<Product>> getByUserKnn(@RequestParam(name = "id") Long userId) {
+        return ResponseEntity.ok(productService.getByUserKnn(userId));
+    }
+
+    @GetMapping(path = "/itemKnn")
+    public ResponseEntity<List<Product>> getByItemKnn(@RequestParam(name = "id") Long userId) {
+        return ResponseEntity.ok(productService.getByItemKnn(userId));
+    }
+
+    @GetMapping("/slopeOne")
+    public ResponseEntity<List<Product>> getBySlopeOne(@RequestParam(name = "id") Long userId) {
+        return ResponseEntity.ok(productService.getBySlopeOne(userId));
+    }
+
+    @GetMapping(path = "/hybrid")
+    public ResponseEntity<List<Product>> getByHybrid(@RequestParam(name = "id") Long userId) {
+        return ResponseEntity.ok(productService.getByHybrid(userId));
     }
 
     @PostMapping("/saveRating")
@@ -44,6 +64,11 @@ public class ProductController {
 
     @GetMapping(path = "/cnt")
     public ResponseEntity<Double> countRMSE() {
-        return ResponseEntity.ok(productService.getCertainRMSE());
+        return ResponseEntity.ok(productService.countRMSE());
+    }
+
+    @GetMapping(path = "/gen")
+    public void gen() {
+        productService.generate();
     }
 }

@@ -1,12 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.*;
-import com.example.demo.recommendations.ContentBased;
+import com.example.demo.recommendations.*;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -27,10 +28,10 @@ public class ProductService {
     private UserRepository userRepository;
 
     @Autowired
-    private PoliceRepository policeRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private PoliceRepository policeRepository;
 
     @Transactional
     public List<Product> getAllProducts() {
@@ -52,30 +53,70 @@ public class ProductService {
         return allProducts.size() < 4 ? allProducts : allProducts.stream().limit(3).collect(Collectors.toList());
     }
 
-    public double getRMSE() {
-        List<Rating> allRatings = (List<Rating>) ratingRepository.findAll();
-        double count = 0;
-        double sum = 0;
-        for (Rating allRating : allRatings) {
-            count = count + 3;
-            sum += allRating.getConvenience();
-            sum += allRating.getImpression();
-            sum += allRating.getPrice();
-        }
-        double avgRating = sum / count;
-
-        double newSum = 0;
-        for (int i = 0; i < count / 3; ++i) {
-            newSum += (avgRating - allRatings.get(i).getConvenience()) * (avgRating - allRatings.get(i).getConvenience());
-            newSum += (avgRating - allRatings.get(i).getImpression()) * (avgRating - allRatings.get(i).getImpression());
-            newSum += (avgRating - allRatings.get(i).getPrice()) * (avgRating - allRatings.get(i).getPrice());
-        }
-        return Math.sqrt(newSum/count);
+    @Transactional
+    public Set<Product> getProductsByContentBased(Long userId) {
+        User someUser = userRepository.findById(userId).orElse(new User());
+        List<Product> userProducts = someUser.getPolicies().stream().map(Police::getProduct).collect(Collectors.toList());
+        return ContentBased.getByContentBased(userProducts, (List<Product>) productRepository.findAll(),
+                (List<Category>) categoryRepository.findAll());
     }
 
-    public double getCertainRMSE() {
+    @Transactional
+    public List<Product> getByUserKnn(Long userId) {
+        User someUser = userRepository.findById(userId).orElse(new User());
+        List<User> allUsers = (List<User>) userRepository.findAll();
+        allUsers.remove(someUser);
+        return UserKnn.getProductsByUserBasedKnn(someUser, 3, allUsers);
+    }
+
+    public void generate() {
+        Police police;
+        for (int i = 68; i < 88; ++i) {
+            police = policeRepository.findById((long) i).orElse(new Police());
+            List<Rating> p = ratingRepository.findAllByUserId(police.getUser().getId());
+            if (p.size() == 1) {
+                police.setProduct(p.get(0).getProduct());
+                policeRepository.save(police);
+            }
+        }
+    }
+
+    @Transactional
+    public List<Product> getByItemKnn(Long userId) {
+        User someUser = userRepository.findById(userId).orElse(new User());
+        List<Product> allProducts = (List<Product>) productRepository.findAll();
+        return ItemKnn.getProductsByItemBasedKnn(someUser, 3, allProducts);
+    }
+
+    @Transactional
+    public List<Product> getBySlopeOne(Long userId) {
+        User someUser = userRepository.findById(userId).orElse(new User());
+        List<Product> allProducts = (List<Product>) productRepository.findAll();
         List<Rating> allRatings = (List<Rating>) ratingRepository.findAll();
-        List<Rating> certainRatings = ratingRepository.findAllByProductId(1L);
+        return SlopeOne.getBySlopeOne(someUser, 3.9, allRatings, allProducts);
+    }
+
+    @Transactional
+    public List<Product> getByHybrid(Long userId) {
+        User someUser = userRepository.findById(userId).orElse(new User());
+        List<Rating> allRatings = (List<Rating>) ratingRepository.findAll();
+        return Hybrid.getProductsByHybrid(someUser, 3.9, allRatings);
+    }
+
+    @Transactional
+    public Rating save(Rating rating) {
+        return ratingRepository.save(rating);
+    }
+
+    @Transactional
+    public double countRMSE() {
+        List<Rating> allRatings = (List<Rating>) ratingRepository.findAll();
+
+        List<Product> actualResult = getByHybrid(39L);
+        List<Rating> certainRatings = new ArrayList<>();
+        for (Product p: actualResult) {
+            certainRatings.addAll(ratingRepository.findAllByProductId(p.getId()));
+        }
 
         double count = 0;
         double sum = 0;
@@ -121,21 +162,4 @@ public class ProductService {
             return 0;
         }
     }
-
-    public Set<Product> getProductsByContentBased() {
-        User someUser = userRepository.findById(39L).orElse(new User());
-        List<Product> userProducts = someUser.getPolicies().stream().map(Police::getProduct).collect(Collectors.toList());
-        return ContentBased.getByContentBased(userProducts, (List<Product>) productRepository.findAll(),
-                (List<Category>) categoryRepository.findAll());
-    }
-
-    public Rating save(Rating rating) {
-        return ratingRepository.save(rating);
-    }
-
-//    public List<Product> getProductsBySlopeOne() {
-//        List<Product> allProducts = (List<Product>) productRepository.findAll();
-//        User someUser = userRepository.findById(34L).orElse(new User());
-//        SlopeOne.slopeOne(someUser, 3.6, allProducts);
-//    }
 }

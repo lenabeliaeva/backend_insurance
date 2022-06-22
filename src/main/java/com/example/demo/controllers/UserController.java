@@ -39,6 +39,11 @@ public class UserController {
         return ResponseEntity.ok(service.signUp(user));
     }
 
+    @PatchMapping("/update")
+    public ResponseEntity<User> update(@RequestBody User user) {
+        return ResponseEntity.ok(service.update(user));
+    }
+
     @GetMapping("/genders")
     public ResponseEntity<List<Gender>> getAllGenders() {
         return ResponseEntity.ok(service.getAllGenders());

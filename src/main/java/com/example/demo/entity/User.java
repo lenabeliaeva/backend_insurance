@@ -4,6 +4,7 @@ import com.example.demo.entity.userdata.ActivitySphere;
 import com.example.demo.entity.userdata.EducationLevel;
 import com.example.demo.entity.userdata.Gender;
 import com.example.demo.entity.userdata.IncomeLevel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -60,6 +61,7 @@ public class User {
     @JoinColumn(name = "activity_sphere_id")
     private ActivitySphere activitySphere;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Police> policies;
 }

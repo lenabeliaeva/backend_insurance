@@ -1,51 +1,42 @@
 package com.example.demo.recommendations;
 
-import com.example.demo.entity.Police;
 import com.example.demo.entity.Product;
+import com.example.demo.entity.Rating;
 import com.example.demo.entity.User;
 
 import java.util.*;
 
-public class SlopeOne {
+public class Hybrid {
+    private Hybrid() throws IllegalAccessException {
+        throw new IllegalAccessException("Instances are not needed");
+    }
+
     private static final Map<Product, Map<Product, Double>> difference = new HashMap<>();
     private static final Map<Product, Map<Product, Integer>> frequency = new HashMap<>();
     private static Map<User, HashMap<Product, Double>> inputData;
     private static final Map<User, HashMap<Product, Double>> outputData = new HashMap<>();
 
-    public static List<Product> slopeOne(User user, Double minRating, List<Police> rec) {
-//        inputData = toHashMap(rec);
-//        printData(inputData);
-        long start = System.currentTimeMillis();
+    public static List<Product> getProductsByHybrid(User user, Double minR, List<Rating> allRatings) {
+        inputData = toHashMap(allRatings);
         buildDifferencesMatrix(inputData);
-        List<Product> result = predict(inputData, user, minRating, 0.55, 0.45);
-        long finish = System.currentTimeMillis();
-        long resultCalc = finish - start;
-        System.out.println("result time = " + resultCalc);
-        System.out.println("Prediction: " + result);
-        return result;
+        return predict(inputData, user, minR, 0.55, 0.45);
     }
 
-//    private static Map<User, HashMap<Product, Double>> toHashMap(List<Product> rec){
-//        Map<User, HashMap<Product, Double>> allElements = new HashMap<>();
-//        HashMap<Product, Double> map2;
-//        for (int i = 0; i < rec.size(); i++){
-//            map2 = new HashMap<>();
-//            map2.put(rec.get(i), (double) rec.get(i).getRatings().get(0).getConvenience());
-//            if(i+1 < rec.size() && rec.get(i + 1).getUser().equals(rec.get(i).getUser()))
-//                for(Police police: rec) {
-//                    if (police.getUser().equals(rec.get(i).getUser()))
-//                        map2.put(police.getProduct(), (double)police.getProduct().getRatings().get(0).getConvenience());
-//                }
-//            if(!allElements.containsKey(rec.get(i).getUser()))
-//                allElements.put(rec.get(i).getUser(), map2);
-//        }
-//        return allElements;
-//    }
+    private static Map<User, HashMap<Product, Double>> toHashMap(List<Rating> allRatings) {
+        Map<User, HashMap<Product, Double>> allElements = new HashMap<>();
+        HashMap<Product, Double> productRatingsMap;
+        for (Rating r : allRatings) {
+            if (allElements.containsKey(r.getUser())) {
+                allElements.get(r.getUser()).put(r.getProduct(), r.getProduct().getBar());
+            } else {
+                productRatingsMap = new HashMap<>();
+                productRatingsMap.put(r.getProduct(), r.getProduct().getBar());
+                allElements.put(r.getUser(), productRatingsMap);
+            }
+        }
+        return allElements;
+    }
 
-    /**
-     * Нахождение матрицы отклонений
-     * @param data существующая матрица оценок
-     */
     private static void buildDifferencesMatrix(Map<User, HashMap<Product, Double>> data) {
         for (HashMap<Product, Double> user : data.values()) {
             for (Map.Entry<Product, Double> e : user.entrySet()) {
@@ -75,14 +66,8 @@ public class SlopeOne {
                 difference.get(j).put(i, oldValue / count);
             }
         }
-
     }
 
-    /**
-     * На основании имеющихся данных прогнозируют все недостающие рейтинги.
-     * Если предсказание не возможно, значение будет равно -1
-     * @param data существующая матрица оценок
-     */
     private static ArrayList<Product> predict(Map<User, HashMap<Product, Double>> data, User user, Double minRat, Double w1, Double w2) {
         HashMap<Product, Double> uPred = new HashMap<>();
         HashMap<Product, Integer> uFreq = new HashMap<>();
@@ -113,7 +98,7 @@ public class SlopeOne {
             for(Map.Entry<User, HashMap<Product, Double>> e2 :inputData.entrySet()){
                 for (Product j : e.getValue().keySet()) {
                     if (e.getValue().containsKey(j)) {
-                        double weightRat = e.getValue().get(j) * w1 + j.getRatings().get(0).getConvenience() * w2;
+                        double weightRat = e.getValue().get(j) * w1 + j.getBar() * w2;
                         clean.put(j, weightRat);
                     } else if (!clean.containsKey(j)) {
                         clean.put(j, -1.0);
@@ -122,35 +107,18 @@ public class SlopeOne {
             }
             outputData.put(e.getKey(), clean);
         }
+        List<Product> currentUserProducts = new ArrayList<>();
+        user.getPolicies().forEach(p -> currentUserProducts.add(p.getProduct()));
         for(Map.Entry<User, HashMap<Product, Double>> map: outputData.entrySet()) { //create recommendation list
             if (map.getKey() == user) {
                 for (Map.Entry<Product, Double> eSet : map.getValue().entrySet()) {
-                    if (eSet.getValue() >= minRat)
+                    if (eSet.getValue() >= minRat && !currentUserProducts.contains(eSet.getKey()))
                         recommendation.add(eSet.getKey());
-                }
-                System.out.println("res = " + user.getPolicies());
-                for (Police res : user.getPolicies()) { //delete own policies from recommendation list
-                    recommendation.remove(res.getProduct());
-//                    if(res.getRating() > 0)
-//                        recommendation.remove(res.getProduct());
                 }
             }
         }
-        recommendation.sort(Comparator.comparingInt(o -> o.getRatings().get(0).getConvenience()));
+
+        recommendation.sort(Comparator.comparing(Product::getBar).reversed());
         return recommendation;
-    }
-
-    static double calculateRmse(double[] pred, double[] real) {
-        double sum = 0;
-        double average;
-        double rmse;
-
-        int n = pred.length;
-        for (int i = 0; i < n; i++) {
-            sum += Math.pow((pred[i] - real[i]), 2);
-        }
-        average = sum / n;
-        rmse = Math.sqrt(average);
-        return rmse;
     }
 }

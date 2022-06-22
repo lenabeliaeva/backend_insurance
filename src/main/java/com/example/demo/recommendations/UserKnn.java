@@ -8,20 +8,33 @@ import java.util.*;
 
 public class UserKnn {
 
+    private UserKnn() throws IllegalAccessException {
+        throw new IllegalAccessException("Instances are not needed");
+    }
+
     public static List<Product> getProductsByUserBasedKnn(User current, int k, List<User> allUsers) {
+        List<Product> currentUserProducts = new ArrayList<>();
+        current.getPolicies().forEach(p -> currentUserProducts.add(p.getProduct()));
+
         SortedMap<Double, User> usersDistance = new TreeMap<>(Comparator.reverseOrder());
         allUsers.forEach(u -> {
             if (!u.getId().equals(current.getId())) {
                 usersDistance.put(euclideanDistance(current, u), u);
             }
         });
+
         List<Police> similarPolicies = new ArrayList<>();
         for (int i = 0; i < k; ++i) {
             similarPolicies.addAll(usersDistance.get(usersDistance.firstKey()).getPolicies());
             usersDistance.remove(usersDistance.firstKey());
         }
+
         List<Product> result = new ArrayList<>();
-        similarPolicies.forEach(p -> result.add(p.getProduct()));
+        similarPolicies.forEach(p -> {
+            if (!currentUserProducts.contains(p.getProduct())) {
+                result.add(p.getProduct());
+            }
+        });
         return result;
     }
 

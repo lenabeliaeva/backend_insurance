@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Rating;
 import com.example.demo.entity.User;
 import com.example.demo.entity.userdata.ActivitySphere;
 import com.example.demo.entity.userdata.EducationLevel;
@@ -12,6 +13,7 @@ import com.example.demo.repository.userdata.GenderRepository;
 import com.example.demo.repository.userdata.IncomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.naming.NoPermissionException;
@@ -82,6 +84,11 @@ public class UserServiceImpl {
             user.setPassword(password);
             return repository.save(user);
         }
+    }
+
+    @Transactional
+    public User update(User user) {
+        return repository.save(user);
     }
 
     public User getUserById(Long id) {
