@@ -47,11 +47,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.getByItemKnn(userId));
     }
 
-    @GetMapping("/slopeOne")
-    public ResponseEntity<List<Product>> getBySlopeOne(@RequestParam(name = "id") Long userId) {
-        return ResponseEntity.ok(productService.getBySlopeOne(userId));
-    }
-
     @GetMapping(path = "/hybrid")
     public ResponseEntity<List<Product>> getByHybrid(@RequestParam(name = "id") Long userId) {
         return ResponseEntity.ok(productService.getByHybrid(userId));

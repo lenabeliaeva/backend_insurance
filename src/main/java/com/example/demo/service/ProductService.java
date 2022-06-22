@@ -89,14 +89,6 @@ public class ProductService {
     }
 
     @Transactional
-    public List<Product> getBySlopeOne(Long userId) {
-        User someUser = userRepository.findById(userId).orElse(new User());
-        List<Product> allProducts = (List<Product>) productRepository.findAll();
-        List<Rating> allRatings = (List<Rating>) ratingRepository.findAll();
-        return SlopeOne.getBySlopeOne(someUser, 3.9, allRatings, allProducts);
-    }
-
-    @Transactional
     public List<Product> getByHybrid(Long userId) {
         User someUser = userRepository.findById(userId).orElse(new User());
         List<Rating> allRatings = (List<Rating>) ratingRepository.findAll();
